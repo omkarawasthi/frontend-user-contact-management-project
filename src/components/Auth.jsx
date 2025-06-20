@@ -1,6 +1,7 @@
 import { useState } from "react"
 import "../styles/Auth.css"
 import { useAuth } from "../context/AuthContext"
+import { toast } from 'react-toastify';
 
 const Auth = () => {
   const { login, register, loading, error } = useAuth()
@@ -33,10 +34,14 @@ const Auth = () => {
         password: formData.password,
       })
 
+
       if (!result.success) {
-        alert(result.error)
+        toast.error(result.error)
+        // alert(result.error)
       }
-    } else {
+    }
+
+    else {
       const result = await register({
         first_name: formData.first_name,
         last_name: formData.last_name,
@@ -48,8 +53,11 @@ const Auth = () => {
         date_of_birth: formData.date_of_birth,
       })
 
+      console.log("Result is :",result);
+
       if (result.success) {
-        alert("Account created successfully! Please login.")
+        toast.success("Account created successfully! Please login.")
+        // alert("Account created successfully! Please login.")
         setIsLogin(true)
         setFormData({
           first_name: "",
@@ -62,8 +70,10 @@ const Auth = () => {
           date_of_birth: "",
           loginField: "",
         })
-      } else {
-        alert(result.error)
+      } 
+      else {
+        toast.error(result.error)
+        // alert(result.error)
       }
     }
   }

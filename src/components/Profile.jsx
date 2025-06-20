@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import "../styles/./Profile.css"
 import { useAuth } from "../context/AuthContext"
+import { toast } from 'react-toastify';
 
 const Profile = () => {
   const { user, logout, updateUser, deleteUser } = useAuth()
@@ -33,13 +34,15 @@ const Profile = () => {
     const result = await updateUser(formData)
 
     if (result.success) {
-      alert("Profile updated successfully!")
+      toast.success("Profile updated successfully!")
+      // alert("Profile updated successfully!")
       navigate("/profile");
       setIsEditing(false)
-    } else {
-      alert(result.error)
+    } 
+    else {
+      toast.error(result.error)
+      // alert(result.error)
     }
-
     setLoading(false)
   }
 
@@ -50,10 +53,13 @@ const Profile = () => {
       const result = await deleteUser()
 
       if (result.success) {
+        toast.success("Account deleted successfully!")
         alert("Account deleted successfully!")
         // User will be automatically redirected to auth page due to logout in deleteUser
-      } else {
-        alert(result.error)
+      } 
+      else {
+        toast.error(result.error)
+        // alert(result.error)
         setLoading(false)
       }
     }

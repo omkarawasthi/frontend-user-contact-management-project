@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../context/AuthContext"
 import "../styles/Search.css"
+import { toast } from 'react-toastify';
 
 const Search = () => {
   // const { token } = useAuth()
@@ -23,7 +24,7 @@ const Search = () => {
     try {
       const token = localStorage.getItem("token");
       // console.log("token is :", token)
-      const response = await fetch(`http://localhost:8000/api/v1/users/search/?name=${searchQuery}`, {
+      const response = await fetch(`https://backend-of-user-contact-management.onrender.com/api/v1/users/search/?name=${searchQuery}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -36,12 +37,16 @@ const Search = () => {
         // console.log("searched data :", data)
 
         setSearchResults(data.users)
-      } else {
-        alert("Failed to search users")
+      } 
+      else {
+        toast.error("Failed to search users")
+        // alert("Failed to search users")
       }
-    } catch (error) {
+    } 
+    catch (error) {
       console.error("Error searching users:", error)
-      alert("Network error. Please try again.")
+      toast.error("Network error. Please try again.")
+      // alert("Network error. Please try again.")
     } finally {
       setLoading(false)
     }
@@ -52,7 +57,7 @@ const Search = () => {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch("http://localhost:8000/api/v1/birthday-users/7", {
+      const response = await fetch("https://backend-of-user-contact-management.onrender.com/api/v1/birthday-users/7", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -70,13 +75,19 @@ const Search = () => {
         setBirthdayUsers(data)
         setShowBirthdayUsers(true)
         setSearchResults([])
-      } else {
-        alert("Failed to fetch birthday users")
+      } 
+      else {
+        toast.error("Failed to fetch birthday users")
+        // alert("Failed to fetch birthday users")
       }
-    } catch (error) {
+    } 
+
+    catch (error) {
       console.error("Error fetching birthday users:", error)
+      toast.error("Network error. Please try again.")
       alert("Network error. Please try again.")
-    } finally {
+    } 
+    finally {
       setLoading(false)
     }
   }
@@ -86,7 +97,7 @@ const Search = () => {
       setEmailLoading(true)
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("http://localhost:8000/api/v1/send-birthday-emails", {
+        const response = await fetch("https://backend-of-user-contact-management.onrender.com/api/v1/send-birthday-emails", {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
