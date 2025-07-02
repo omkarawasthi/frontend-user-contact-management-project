@@ -20,7 +20,7 @@ const Search = () => {
     setLoading(true)
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:8000/api/v1/users/search/?name=${searchQuery}`, {
+      const response = await fetch(`https://backend-of-user-contact-management.onrender.com/api/v1/users/search/?name=${searchQuery}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -49,7 +49,7 @@ const Search = () => {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch("http://localhost:8000/api/v1/birthday-users/7", {
+      const response = await fetch("https://backend-of-user-contact-management.onrender.com/api/v1/birthday-users/7", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -88,7 +88,7 @@ const Search = () => {
       setEmailLoading(true)
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("http://localhost:8000/api/v1/send-birthday-emails", {
+        const response = await fetch("https://backend-of-user-contact-management.onrender.com/api/v1/send-birthday-emails", {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,

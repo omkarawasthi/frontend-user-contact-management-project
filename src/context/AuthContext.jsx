@@ -87,7 +87,7 @@ export const AuthProvider = ({ children }) => {
       if (token && userId) {
         try {
           // Verify token by fetching user data
-          const response = await fetch(`http://localhost:8000/api/v1/getuser/${userId}`, {
+          const response = await fetch(`https://backend-of-user-contact-management.onrender.com/api/v1/getuser/${userId}`, {
             headers: {
               Authorization: `Bearer ${token}`,
               "Content-Type": "application/json",
@@ -133,7 +133,7 @@ export const AuthProvider = ({ children }) => {
     dispatch({ type: AUTH_ACTIONS.LOGIN_START })
 
     try {
-      const response = await fetch("http://localhost:8000/api/v1/login", {
+      const response = await fetch("https://backend-of-user-contact-management.onrender.com/api/v1/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -183,7 +183,7 @@ export const AuthProvider = ({ children }) => {
 
     try {
       
-      const response = await fetch("http://localhost:8000/api/v1/signup", {
+      const response = await fetch("https://backend-of-user-contact-management.onrender.com/api/v1/signup", {
         method: "POST",
         headers: {
           "Content-Type": "multipart/form-data",
@@ -233,7 +233,7 @@ export const AuthProvider = ({ children }) => {
       
       // console.log("")
       
-      const response = await fetch(`http://localhost:8000/api/v1/updateuser/${user_id}`, {
+      const response = await fetch(`https://backend-of-user-contact-management.onrender.com/api/v1/updateuser/${user_id}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -267,7 +267,7 @@ export const AuthProvider = ({ children }) => {
       const user_id = localStorage.getItem("userId")
       const token = localStorage.getItem("token")
 
-      const response = await fetch(`http://localhost:8000/api/v1/deleteuser/${user_id}`, {
+      const response = await fetch(`https://backend-of-user-contact-management.onrender.com/api/v1/deleteuser/${user_id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
