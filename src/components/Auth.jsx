@@ -1,11 +1,11 @@
-import { useState } from "react"
-import "../styles/Auth.css"
-import { useAuth } from "../context/AuthContext"
-import { toast } from 'react-toastify';
+import { useAuth } from "../context/AuthContext";
+import { toast } from "react-toastify";
+import { useState } from "react";
+import "../styles/Auth.css";
 
 const Auth = () => {
-  const { login, register, loading, error } = useAuth()
-  const [isLogin, setIsLogin] = useState(true)
+  const { login, register, loading } = useAuth();
+  const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -15,33 +15,29 @@ const Auth = () => {
     phone_no: "",
     aadhar_no: "",
     date_of_birth: "",
-    loginField: "", // for username/email login
-  })
+    loginField: "",
+  });
 
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (isLogin) {
       const result = await login({
         email: formData.loginField,
         password: formData.password,
-      })
-
+      });
 
       if (!result.success) {
-        toast.error(result.error)
-        // alert(result.error)
+        toast.error(result.error);
       }
-    }
-
-    else {
+    } else {
       const result = await register({
         first_name: formData.first_name,
         last_name: formData.last_name,
@@ -51,14 +47,14 @@ const Auth = () => {
         phone_no: formData.phone_no,
         aadhar_no: formData.aadhar_no,
         date_of_birth: formData.date_of_birth,
-      })
+        image: formData.image,
+      });
 
-      console.log("Result is :",result);
+      console.log("Result is :", result);
 
       if (result.success) {
-        toast.success("Account created successfully! Please login.")
-        // alert("Account created successfully! Please login.")
-        setIsLogin(true)
+        toast.success("Account created successfully! Please login.");
+        setIsLogin(true);
         setFormData({
           first_name: "",
           last_name: "",
@@ -69,14 +65,13 @@ const Auth = () => {
           aadhar_no: "",
           date_of_birth: "",
           loginField: "",
-        })
-      } 
-      else {
-        toast.error(result.error)
-        // alert(result.error)
+          image: null,
+        });
+      } else {
+        toast.error(result.error);
       }
     }
-  }
+  };
 
   return (
     <div className="auth-container">
@@ -219,6 +214,19 @@ const Auth = () => {
                   required
                 />
               </div>
+
+              <div className="form-group">
+                <label htmlFor="image">Profile Image</label>
+                <input
+                  type="file"
+                  id="image"
+                  name="image"
+                  accept="image/*"
+                  onChange={(e) =>
+                    setFormData({ ...formData, image: e.target.files[0] })
+                  }
+                />
+              </div>
             </>
           )}
 
@@ -230,14 +238,18 @@ const Auth = () => {
         <div className="auth-switch">
           <p>
             {isLogin ? "Don't have an account? " : "Already have an account? "}
-            <button type="button" className="switch-button" onClick={() => setIsLogin(!isLogin)}>
+            <button
+              type="button"
+              className="switch-button"
+              onClick={() => setIsLogin(!isLogin)}
+            >
               {isLogin ? "Sign Up" : "Login"}
             </button>
           </p>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Auth
+export default Auth;

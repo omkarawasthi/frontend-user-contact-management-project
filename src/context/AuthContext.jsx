@@ -87,7 +87,7 @@ export const AuthProvider = ({ children }) => {
       if (token && userId) {
         try {
           // Verify token by fetching user data
-          const response = await fetch(`https://backend-of-user-contact-management.onrender.com/api/v1/getuser/${userId}`, {
+          const response = await fetch(`http://localhost:8000/api/v1/getuser/${userId}`, {
             headers: {
               Authorization: `Bearer ${token}`,
               "Content-Type": "application/json",
@@ -96,7 +96,6 @@ export const AuthProvider = ({ children }) => {
 
           if (response.ok) {
             const userData = await response.json()
-            // console.log("User data :", userData.user)
 
             dispatch({
               type: AUTH_ACTIONS.LOGIN_SUCCESS,
@@ -113,13 +112,15 @@ export const AuthProvider = ({ children }) => {
             localStorage.removeItem("userId")
             dispatch({ type: AUTH_ACTIONS.SET_LOADING, payload: false })
           }
-        } catch (error) {
+        }
+        catch (error) {
           console.error("Error verifying token:", error)
           localStorage.removeItem("token")
           localStorage.removeItem("userId")
           dispatch({ type: AUTH_ACTIONS.SET_LOADING, payload: false })
         }
-      } else {
+      } 
+      else {
         dispatch({ type: AUTH_ACTIONS.SET_LOADING, payload: false })
       }
     }
@@ -132,7 +133,7 @@ export const AuthProvider = ({ children }) => {
     dispatch({ type: AUTH_ACTIONS.LOGIN_START })
 
     try {
-      const response = await fetch("https://backend-of-user-contact-management.onrender.com/api/v1/login", {
+      const response = await fetch("http://localhost:8000/api/v1/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -141,7 +142,6 @@ export const AuthProvider = ({ children }) => {
       })
 
       const data = await response.json()
-      // console.log("data is :",data)
 
       if (response.ok) {
         // Store token and user ID in localStorage
@@ -157,14 +157,16 @@ export const AuthProvider = ({ children }) => {
         })
 
         return { success: true, data }
-      } else {
+      } 
+      else {
         dispatch({
           type: AUTH_ACTIONS.LOGIN_FAILURE,
           payload: data.message || "Login failed",
         })
         return { success: false, error: data.message || "Login failed" }
       }
-    } catch (error) {
+    } 
+    catch (error) {
       console.error("Login error:", error)
       dispatch({
         type: AUTH_ACTIONS.LOGIN_FAILURE,
@@ -180,22 +182,18 @@ export const AuthProvider = ({ children }) => {
     dispatch({ type: AUTH_ACTIONS.LOGIN_START })
 
     try {
-      console.log("userdata is :",JSON.stringify(userData))
       
-      const response = await fetch("https://backend-of-user-contact-management.onrender.com/api/v1/signup", {
+      const response = await fetch("http://localhost:8000/api/v1/signup", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
         },
         body: JSON.stringify(userData),
       })
 
-      // console.log("response is : ",response)
 
       const data = await response.json()
       
-      console.log("data is :", data)
-
       if (response.ok) {
         dispatch({ type: AUTH_ACTIONS.SET_LOADING, payload: false })
         return { success: true, data }
@@ -207,7 +205,8 @@ export const AuthProvider = ({ children }) => {
         })
         return { success: false, error: data.error }
       }
-    } catch (error) {
+    } 
+    catch (error) {
       console.error("Registration error:", error)
       dispatch({
         type: AUTH_ACTIONS.LOGIN_FAILURE,
@@ -228,15 +227,13 @@ export const AuthProvider = ({ children }) => {
   // Update user function
   const updateUser = async (updatedData) => {
     try {
-      // console.log("Updated Data :", updatedData)
 
       const user_id = localStorage.getItem("userId")
       const token = localStorage.getItem("token")
       
-      // console.log("token is :", token)
+      // console.log("")
       
-
-      const response = await fetch(`https://backend-of-user-contact-management.onrender.com/api/v1/updateuser/${user_id}`, {
+      const response = await fetch(`http://localhost:8000/api/v1/updateuser/${user_id}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -244,20 +241,21 @@ export const AuthProvider = ({ children }) => {
         },
         body: JSON.stringify(updatedData),
       })
-      // console.log("response is : ",response)
+
 
       if (response.ok) {
-        // const updatedUser = await response.json()
         dispatch({
           type: AUTH_ACTIONS.UPDATE_USER,
           payload: "User Updated successfully",
         })
         return { success: true, data: "user updated" }
-      } else {
+      } 
+      else {
         const data = await response.json()
         return { success: false, error: data.message || "Update failed" }
       }
-    } catch (error) {
+    } 
+    catch (error) {
       console.error("Update error:", error)
       return { success: false, error: "Network error. Please try again." }
     }
@@ -269,7 +267,7 @@ export const AuthProvider = ({ children }) => {
       const user_id = localStorage.getItem("userId")
       const token = localStorage.getItem("token")
 
-      const response = await fetch(`https://backend-of-user-contact-management.onrender.com/api/v1/deleteuser/${user_id}`, {
+      const response = await fetch(`http://localhost:8000/api/v1/deleteuser/${user_id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -280,11 +278,13 @@ export const AuthProvider = ({ children }) => {
       if (response.ok) {
         logout() // Clear auth state after successful deletion
         return { success: true }
-      } else {
+      } 
+      else {
         const data = await response.json()
         return { success: false, error: data.message || "Delete failed" }
       }
-    } catch (error) {
+    } 
+    catch (error) {
       console.error("Delete error:", error)
       return { success: false, error: "Network error. Please try again." }
     }
@@ -301,6 +301,7 @@ export const AuthProvider = ({ children }) => {
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
+
 
 // Custom hook to use auth context
 export const useAuth = () => {

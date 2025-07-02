@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
-import Auth from "./components/Auth"
+import { AuthProvider, useAuth } from "./context/AuthContext"
 import Profile from "./components/Profile"
 import Search from "./components/Search"
+import Auth from "./components/Auth"
 import "./App.css"
-import { AuthProvider, useAuth } from "./context/AuthContext"
 
 function AppContent() {
   const { user, loading, isAuthenticated } = useAuth()
